@@ -1,6 +1,6 @@
 {
   "name": "@etd-framework/etdorganizations",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Package de gestion d'organisations",
   "homepage": "https://github.com/etd-framework/etdorganizations",
   "license": "GNU General Public License v3",
@@ -15,7 +15,7 @@
     "grunt-contrib-cssmin": "^1.0.2",
     "grunt-contrib-less": "^1.4.1",
     "grunt-contrib-uglify": "^2.0.0",
-    "grunt-contrib-watch": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.1",
     "grunt-postcss": "^0.8.0",
     "grunt-sync": "^0.6.2",
     "postcss-cli": "^2.6.0",

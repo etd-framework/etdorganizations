@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.0
+ * @version     1.0.1
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
