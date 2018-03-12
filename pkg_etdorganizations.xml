@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension type="package" version="3.8" method="upgrade">
+    <name>ETDORGANIZATIONS_PACKAGE_TITLE</name>
+    <packagename>etdorganizations</packagename>
+    <version>1.0.0</version>
+    <creationDate>March 2017</creationDate>
+    <author>ETD Solutions</author>
+    <copyright>Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.</copyright>
+    <license>Apache License 2.0</license>
+    <authorEmail>support@etd-solutions.com</authorEmail>
+    <authorUrl>etd-solutions.com</authorUrl>
+    <description>ETDORGANIZATIONS_PACKAGE_XML_DESCRIPTION</description>
+
+    <!-- Installation script -->
+    <scriptfile>etdorganizations.install.php</scriptfile>
+
+    <languages>
+        <language tag="fr-FR">language/fr-FR/fr-FR.pkg_etdorganizations.sys.ini</language>
+    </languages>
+
+    <files>
+        <file type="component" id="com_etdorganizations" >com_etdorganizations.zip</file>
+    </files>
+
+    <!-- Update servers -->
+    <updateservers>
+        <server type="extension" priority="1" name="ETD Organizations Updates">https://raw.githubusercontent.com/etd-framework/etdorganizations/staging/updates/pkg_etdorganizations.xml</server>
+    </updateservers>
+</extension>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+		<field name="id"
+			type="text"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			description="JGLOBAL_FIELD_ID_DESC"
+			size="10"
+			default="0"
+			readonly="true"
+			class="readonly"
+		/>
+
+		<field name="name"
+			type="text"
+			label="COM_ETDORGANIZATIONS_CONTACT_FIELD_NAME_LABEL"
+			description="COM_ETDORGANIZATIONS_CONTACT_FIELD_NAME_DESC"
+			class="input-xxlarge input-large-text"
+			size="40"
+			required="true"
+		 />
+
+		<field name="checked_out"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field name="checked_out_time"
+			type="hidden"
+			filter="unset"
+		 />
+	</fieldset>
+	<fieldset name="details" label="COM_ETDORGANIZATIONS_CONTACT_CONTACT_DETAILS">
+
+		<field name="@text_details"
+			type="note"
+			label=""
+			description="COM_ETDORGANIZATIONS_CONTACT_EDIT_DETAILS" />
+
+		<field name="image"
+			type="media"
+			hide_none="1"
+			label="COM_ETDORGANIZATIONS_CONTACT_FIELD_PARAMS_IMAGE_LABEL"
+			description="COM_ETDORGANIZATIONS_CONTACT_FIELD_PARAMS_IMAGE_DESC"
+			/>
+
+		<field name="con_position" type="text"
+			label="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_POSITION_LABEL"
+			description="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_POSITION_DESC"
+			size="30"
+		/>
+
+		<field name="email_to" type="email"
+			label="JGLOBAL_EMAIL"
+			description="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_EMAIL_DESC"
+			size="30"
+		/>
+
+		<field name="telephone" type="text"
+			label="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_TELEPHONE_LABEL"
+			description="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_TELEPHONE_DESC"
+
+			size="30"
+		/>
+
+		<field name="mobile" type="text"
+			label="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_MOBILE_LABEL"
+			description="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_MOBILE_DESC"
+			size="30"
+		/>
+
+		<field name="fax" type="text"
+			label="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_FAX_LABEL"
+			description="COM_ETDORGANIZATIONS_CONTACT_FIELD_INFORMATION_FAX_DESC"
+			size="30"
+		/>
+	</fieldset>
+</form>
