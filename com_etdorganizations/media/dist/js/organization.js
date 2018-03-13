@@ -1,15 +1,15 @@
 jQuery(function($) {
     function editContact(id, nom, photo) {
 
-        // Si le contact existe
-        if($('#contact-' + id).length == 0) {
+        // Si le contact n'existe pas déjà, il faut le créer.
+        if($('#contact-' + id).length === 0) {
 
             var chaine = '';
 
             chaine += '<div class="thumbnail" id="contact-' + id + '">';
             chaine += '<input type="hidden" name="jform[contacts][]" value="' + id + '">';
 
-            if(photo != '') {
+            if(photo !== '') {
                 chaine += '<div class="img" style="background-image:url(' + photo + ');"></div>';
             }
 
@@ -22,13 +22,15 @@ jQuery(function($) {
             SqueezeBox.assign($('#contact-' + id + ' a.modal').get(), {
                 parse: 'rel'
             });
-        } else {
+        }
+        // Sinon, c'est qu'il existait déjà. Il faut mettre à jour ses informations sur le thumbnail.
+        else {
             var $contact = $('#contact-' + id);
 
             $contact.find('.caption h3').text(nom);
 
             if($contact.find('.img').length) {
-                if(photo == '') {
+                if(photo === '') {
                     $contact.find('.img').remove();
                 } else {
                     $contact.find('.img').css('background-image', 'url(' + photo + ')');
@@ -55,7 +57,7 @@ jQuery(function($) {
         });
 
         Joomla.submitbutton = function(task) {
-            if (task == 'organization.cancel' || document.formvalidator.isValid(document.getElementById('organization-form'))) {
+            if (task === 'organization.cancel' || document.formvalidator.isValid(document.getElementById('organization-form'))) {
                 Joomla.submitform(task, document.getElementById('organization-form'));
             }
         };
