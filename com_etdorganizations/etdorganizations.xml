@@ -7,7 +7,7 @@
     <license>GNU General Public License v3</license>
     <authorEmail>support@etd-solutions.com</authorEmail>
     <authorUrl>etd-solutions.com</authorUrl>
-    <version>1.0.0</version>
+    <version>1.0.4</version>
     <description>COM_ETDORGANIZATIONS_XML_DESCRIPTION</description>
 
     <!-- Runs on install -->
@@ -23,6 +23,12 @@
             <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
+
+    <update> <!-- Runs on update; New since J2.5 -->
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
 
     <!-- Media files -->
     <media destination="com_etdorganizations" folder="media">
@@ -71,6 +77,7 @@
             <folder>controllers</folder>
             <folder>helpers</folder>
             <folder>models</folder>
+            <folder>sql</folder>
             <folder>tables</folder>
             <folder>views</folder>
         </files>
