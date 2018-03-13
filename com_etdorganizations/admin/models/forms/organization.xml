@@ -181,9 +181,24 @@
 
     </fields>
 
+    <fieldset name="contacts"
+              addfieldpath="/administrator/components/com_contact/models/fields">
+        <field
+                name="contact_id"
+                type="modal_contact"
+                label="COM_CONTACT_SELECT_CONTACT_LABEL"
+                description="COM_CONTACT_SELECT_CONTACT_DESC"
+                select="true"
+                new="true"
+                edit="true"
+                clear="true"
+        />
+
+    </fieldset>
+
     <field
             name="contacts"
             type="hidden"
-        />
+    />
 
 </form>
