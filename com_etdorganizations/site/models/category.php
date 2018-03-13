@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.0
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -18,22 +18,14 @@ class EtdOrganizationsModelCategory extends JModelList {
 
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = array(
-                'id',
-                'a.id',
-                'title',
-                'a.title',
-                'state',
-                'a.state',
-                'ordering',
-                'a.ordering',
-                'a.publish_up',
-                'publish_up',
-                'a.publish_down',
-                'publish_down',
-                'a.created',
-                'created',
-                'hits',
-                'a.hits'
+                'id', 'a.id',
+                'title', 'a.title',
+                'state', 'a.state',
+                'ordering', 'a.ordering',
+                'publish_up', 'a.publish_up',
+                'publish_down', 'a.publish_down',
+                'created', 'a.created',
+                'hits','a.hits'
             );
         }
 
@@ -62,7 +54,7 @@ class EtdOrganizationsModelCategory extends JModelList {
         // Filter by state
         $state = $this->getState('filter.state');
         if (is_numeric($state)) {
-            $query->where('a.state = ' . (int)$state);
+            $query->where('a.state = ' . (int) $state);
         }
 
         // Define null and now dates

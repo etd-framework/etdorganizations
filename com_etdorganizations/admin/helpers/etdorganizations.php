@@ -59,29 +59,29 @@ class EtdOrganizationsHelper extends JHelperContent {
             $item->count_published = 0;
 
             $query = $db->getQuery(true);
-            $query->select('state, count(*) AS count')
+            $query->select('published, count(*) AS count')
                 ->from($db->qn('#__etdorganizations_organizations'))
                 ->where('catid = ' . (int) $item->id)
-                ->group('state');
+                ->group('published');
             $db->setQuery($query);
-            $images = $db->loadObjectList();
+            $organizations = $db->loadObjectList();
 
-            foreach ($images as $image) {
+            foreach ($organizations as $organization) {
 
-                if ($image->state == 1) {
-                    $item->count_published = $image->count;
+                if ($organization->published == 1) {
+                    $item->count_published = $organization->count;
                 }
 
-                if ($image->state == 0) {
-                    $item->count_unpublished = $image->count;
+                if ($organization->published == 0) {
+                    $item->count_unpublished = $organization->count;
                 }
 
-                if ($image->state == 2) {
-                    $item->count_archived = $image->count;
+                if ($organization->published == 2) {
+                    $item->count_archived = $organization->count;
                 }
 
-                if ($image->state == -2) {
-                    $item->count_trashed = $image->count;
+                if ($organization->published == -2) {
+                    $item->count_trashed = $organization->count;
                 }
             }
         }

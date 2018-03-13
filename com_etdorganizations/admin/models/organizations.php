@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.0
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -81,9 +81,9 @@ class EtdOrganizationsModelOrganizations extends JModelList {
         $published = $this->getState('filter.published');
 
         if (is_numeric($published)) {
-            $query->where('a.state = ' . (int) $published);
+            $query->where('a.published = ' . (int) $published);
         } elseif ($published === '') {
-            $query->where('(a.state IN (0, 1))');
+            $query->where('(a.published IN (0, 1))');
         }
 
         // Filter by search in title
@@ -124,7 +124,7 @@ class EtdOrganizationsModelOrganizations extends JModelList {
 
         // Compile the store id.
         $id .= ':' . $this->getState('filter.search');
-        $id .= ':' . $this->getState('filter.state');
+        $id .= ':' . $this->getState('filter.published');
         $id .= ':' . $this->getState('filter.catid');
 
         return parent::getStoreId($id);
@@ -164,7 +164,8 @@ class EtdOrganizationsModelOrganizations extends JModelList {
         $search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
         $this->setState('filter.search', $search);
 
-        $state = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
+        $published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '', 'string');
+        $this->setState('filter.published', $published);
 
         // Load the parameters.
         $params = JComponentHelper::getParams('com_etdorganizations');

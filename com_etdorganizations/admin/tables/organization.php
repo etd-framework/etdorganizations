@@ -29,7 +29,6 @@ class EtdOrganizationsTableOrganization extends JTable {
 
         $date = JFactory::getDate();
         $this->created = $date->toSql();
-        $this->setColumnAlias('published', 'state');
     }
 
     public function bind($src, $ignore = array()) {

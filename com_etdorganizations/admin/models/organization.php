@@ -145,7 +145,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
 
         $condition = array();
         $condition[] = 'catid = ' . (int) $table->catid;
-        $condition[] = 'state >= 0';
+        $condition[] = 'published >= 0';
 
         return $condition;
     }
@@ -179,7 +179,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                 }
             }
 
-            $data['state'] = 0;
+            $data['published'] = 0;
         }
 
         // Automatic handling of alias for empty fields

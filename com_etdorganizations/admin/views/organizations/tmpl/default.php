@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.0
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -24,8 +24,8 @@ $userId		= $user->get('id');
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $canOrder	= $user->authorise('core.edit.state', 'com_etdorganizations');
-$archived	= $this->state->get('filter.state') == 2 ? true : false;
-$trashed	= $this->state->get('filter.state') == -2 ? true : false;
+$archived	= $this->state->get('filter.published') == 2 ? true : false;
+$trashed	= $this->state->get('filter.published') == -2 ? true : false;
 
 ?>
 
