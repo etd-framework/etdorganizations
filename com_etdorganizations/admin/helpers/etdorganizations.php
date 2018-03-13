@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.0
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -14,29 +14,29 @@ defined('_JEXEC') or die('Restricted access to ETD Organizations');
 
 class EtdOrganizationsHelper extends JHelperContent {
 
-	/**
-	 * Configure the Linkbar.
-	 *
-	 * @param   string  $vName  The name of the active view.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.6
-	 */
-	public static function addSubmenu($vName) {
+    /**
+     * Configure the Linkbar.
+     *
+     * @param   string  $vName  The name of the active view.
+     *
+     * @return  void
+     *
+     * @since   1.6
+     */
+    public static function addSubmenu($vName) {
 
-		JHtmlSidebar::addEntry(
-			JText::_('COM_ETDORGANIZATIONS_SUBMENU_ORGANIZATIONS'),
-			'index.php?option=com_etdorganizations&view=organizations',
-			$vName == 'organizations'
-		);
+        JHtmlSidebar::addEntry(
+            JText::_('COM_ETDORGANIZATIONS_SUBMENU_ORGANIZATIONS'),
+            'index.php?option=com_etdorganizations&view=organizations',
+            $vName == 'organizations'
+        );
 
-		JHtmlSidebar::addEntry(
-			JText::_('COM_ETDORGANIZATIONS_SUBMENU_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_etdorganizations',
-			$vName == 'categories'
-		);
-	}
+        JHtmlSidebar::addEntry(
+            JText::_('COM_ETDORGANIZATIONS_SUBMENU_CATEGORIES'),
+            'index.php?option=com_categories&extension=com_etdorganizations',
+            $vName == 'categories'
+        );
+    }
 
     /**
      * Adds Count Items for Category Manager.
@@ -60,7 +60,7 @@ class EtdOrganizationsHelper extends JHelperContent {
 
             $query = $db->getQuery(true);
             $query->select('state, count(*) AS count')
-                ->from($db->qn('#__etdorganizations'))
+                ->from($db->qn('#__etdorganizations_organizations'))
                 ->where('catid = ' . (int) $item->id)
                 ->group('state');
             $db->setQuery($query);

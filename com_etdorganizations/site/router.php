@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.0
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -188,7 +188,7 @@ class EtdOrganizationsRouter extends JComponentRouterBase {
             } else {
                 $query = $db->getQuery(true)
                     ->select($db->quoteName(array('alias', 'catid')))
-                    ->from($db->quoteName('#__etdorganizations'))
+                    ->from($db->quoteName('#__etdorganizations_organizations'))
                     ->where($db->quoteName('id') . ' = ' . (int) $id);
                 $db->setQuery($query);
                 $organization = $db->loadObject();
@@ -271,7 +271,7 @@ class EtdOrganizationsRouter extends JComponentRouterBase {
                     $db = JFactory::getDbo();
                     $query = $db->getQuery(true)
                         ->select($db->quoteName('id'))
-                        ->from('#__etdorganizations')
+                        ->from('#__etdorganizations_organizations')
                         ->where($db->quoteName('catid') . ' = ' . (int) $vars['catid'])
                         ->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
                     $db->setQuery($query);
