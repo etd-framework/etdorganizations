@@ -62,13 +62,13 @@ class EtdOrganizationsModelOrganizations extends JModelList {
      */
     protected function getListQuery() {
 
-        $user  = JFactory::getUser();
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
         // Select the required fields from the table.
-        $query->select('a.*');
-        $query->from('#__etdorganizations_organizations AS a');
+        $query->select($this->getState('list.select', 'a.*, b.title as cat_title'))
+            ->from($db->quoteName('#__etdorganizations_organizations') . ' AS a')
+            ->leftJoin($db->quoteName('#__categories') . ' AS b ON b.id = a.catid');
 
         // Filter by category.
         $categoryId = $this->getState('filter.category_id');
