@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.3
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -29,6 +29,14 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
      * @since    3.2
      */
     public $typeAlias = 'com_etdorganizations.organization';
+
+    /**
+     * The context used for the associations table
+     *
+     * @var    string
+     * @since  3.4.4
+     */
+    protected $associationsContext = 'com_etdorganizations.item';
 
     /**
      * Batch copy/move command. If set to false,
@@ -137,7 +145,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
 
         $condition = array();
         $condition[] = 'catid = ' . (int) $table->catid;
-        $condition[] = 'state >= 0';
+        $condition[] = 'published >= 0';
 
         return $condition;
     }
@@ -171,7 +179,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                 }
             }
 
-            $data['state'] = 0;
+            $data['published'] = 0;
         }
 
         // Automatic handling of alias for empty fields
@@ -313,7 +321,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
 
         $res = parent::save($data);
 
-        $id = ($data["id"] == 0) ? $this->getState($this->context . '.id') : $data["id"];
+        $id = ($data["id"] == 0) ? $this->getState('organization.id') : $data["id"];
 
         $res *= $this->saveContacts($id, $contacts);
 
@@ -388,7 +396,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
      */
     public function saveContacts($id = null, $contacts = array()) {
 
-        $id = (empty($id)) ? $this->getState($this->context . '.id') : $id;
+        $id = (empty($id)) ? $this->getState('organization.id') : $id;
 
         if($id == 0) {
             JFactory::getApplication()->enqueueMessage(JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_NO_ORGANIZATION_ID'), 'warning');
@@ -437,7 +445,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
      */
     public function getContacts($id = null, $fields = array("a.id", "a.name", "a.image")) {
 
-        $id = (empty($id)) ? $this->getState($this->context . '.id') : $id;
+        $id = (empty($id)) ? $this->getState('organization.id') : $id;
 
         $query = $this->_db->getQuery(true);
 

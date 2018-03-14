@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `#__etdorganizations_organizations` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
   `catid` int(10) unsigned NOT NULL DEFAULT '0',
@@ -26,9 +26,7 @@ CREATE TABLE IF NOT EXISTS `#__etdorganizations_organizations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__etdorganizations_organization_contacts` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `organization_id` int(10) unsigned NOT NULL,
   `contact_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_organization_contact` (`organization_id`, `contact_id`)
+  PRIMARY KEY (`organization_id`, `contact_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

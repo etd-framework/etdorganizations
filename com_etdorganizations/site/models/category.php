@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.3
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -18,22 +18,13 @@ class EtdOrganizationsModelCategory extends JModelList {
 
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = array(
-                'id',
-                'a.id',
-                'title',
-                'a.title',
-                'state',
-                'a.state',
-                'ordering',
-                'a.ordering',
-                'a.publish_up',
-                'publish_up',
-                'a.publish_down',
-                'publish_down',
-                'a.created',
-                'created',
-                'hits',
-                'a.hits'
+                'id', 'a.id',
+                'title', 'a.title',
+                'state', 'a.state',
+                'publish_up', 'a.publish_up',
+                'publish_down', 'a.publish_down',
+                'created', 'a.created',
+                'hits','a.hits'
             );
         }
 
@@ -55,14 +46,14 @@ class EtdOrganizationsModelCategory extends JModelList {
 
         // Select required fields from the categories.
         $query->select($this->getState('list.select', 'a.*, c.alias AS cat_alias'))
-            ->from($db->quoteName('#__etdorganizations') . ' AS a')
+            ->from($db->quoteName('#__etdorganizations_organizations') . ' AS a')
             ->leftJoin($db->quoteName('#__categories') . ' AS C ON c.id = a.catid')
             ->where('a.catid = ' . $db->quote($this->getState('category.id')));
 
         // Filter by state
-        $state = $this->getState('filter.state');
-        if (is_numeric($state)) {
-            $query->where('a.state = ' . (int)$state);
+        $published = $this->getState('filter.published');
+        if (is_numeric($published)) {
+            $query->where('a.published = ' . (int) $published);
         }
 
         // Define null and now dates
@@ -71,10 +62,10 @@ class EtdOrganizationsModelCategory extends JModelList {
 
         // Filter by start and end dates.
         $query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
-              ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+            ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 
         // Add the list ordering clause.
-        $query->order($db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
+        $query->order($db->escape($this->getState('list.ordering', 'a.created')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 
         return $query;
     }
@@ -106,9 +97,9 @@ class EtdOrganizationsModelCategory extends JModelList {
         $limitstart = $app->input->get('limitstart', 0, 'uint');
         $this->setState('list.start', $limitstart);
 
-        $orderCol = $app->input->get('filter_order', $params->get('list_ordering', 'ordering'));
+        $orderCol = $app->input->get('filter_order', $params->get('list_ordering', 'created'));
         if (!in_array($orderCol, $this->filter_fields)) {
-            $orderCol = 'ordering';
+            $orderCol = 'created';
         }
         $this->setState('list.ordering', $orderCol);
 

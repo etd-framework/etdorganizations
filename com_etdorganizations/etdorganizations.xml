@@ -7,7 +7,7 @@
     <license>GNU General Public License v3</license>
     <authorEmail>support@etd-solutions.com</authorEmail>
     <authorUrl>etd-solutions.com</authorUrl>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <description>COM_ETDORGANIZATIONS_XML_DESCRIPTION</description>
 
     <!-- Runs on install -->

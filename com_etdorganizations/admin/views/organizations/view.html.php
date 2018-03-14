@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.3
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -89,15 +89,15 @@ class EtdOrganizationsViewOrganizations extends JViewLegacy {
         }
 
         if ($canDo->get('core.edit.state')) {
-            if ($this->state->get('filter.state') != 2) {
+            if ($this->state->get('filter.published') != 2) {
                 JToolbarHelper::publish($this->_name . '.publish', 'JTOOLBAR_PUBLISH', true);
                 JToolbarHelper::unpublish($this->_name . '.unpublish', 'JTOOLBAR_UNPUBLISH', true);
             }
 
-            if ($this->state->get('filter.state') != -1) {
-                if ($this->state->get('filter.state') != 2) {
+            if ($this->state->get('filter.published') != -1) {
+                if ($this->state->get('filter.published') != 2) {
                     JToolbarHelper::archiveList($this->_name . '.archive');
-                } elseif ($this->state->get('filter.state') == 2) {
+                } elseif ($this->state->get('filter.published') == 2) {
                     JToolbarHelper::unarchiveList($this->_name . '.publish');
                 }
             }

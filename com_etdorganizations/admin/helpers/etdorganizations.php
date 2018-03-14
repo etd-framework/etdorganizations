@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.3
+ * @version     1.0.4
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -14,29 +14,29 @@ defined('_JEXEC') or die('Restricted access to ETD Organizations');
 
 class EtdOrganizationsHelper extends JHelperContent {
 
-	/**
-	 * Configure the Linkbar.
-	 *
-	 * @param   string  $vName  The name of the active view.
-	 *
-	 * @return  void
-	 *
-	 * @since   1.6
-	 */
-	public static function addSubmenu($vName) {
+    /**
+     * Configure the Linkbar.
+     *
+     * @param   string  $vName  The name of the active view.
+     *
+     * @return  void
+     *
+     * @since   1.6
+     */
+    public static function addSubmenu($vName) {
 
-		JHtmlSidebar::addEntry(
-			JText::_('COM_ETDORGANIZATIONS_SUBMENU_ORGANIZATIONS'),
-			'index.php?option=com_etdorganizations&view=organizations',
-			$vName == 'organizations'
-		);
+        JHtmlSidebar::addEntry(
+            JText::_('COM_ETDORGANIZATIONS_SUBMENU_ORGANIZATIONS'),
+            'index.php?option=com_etdorganizations&view=organizations',
+            $vName == 'organizations'
+        );
 
-		JHtmlSidebar::addEntry(
-			JText::_('COM_ETDORGANIZATIONS_SUBMENU_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_etdorganizations',
-			$vName == 'categories'
-		);
-	}
+        JHtmlSidebar::addEntry(
+            JText::_('COM_ETDORGANIZATIONS_SUBMENU_CATEGORIES'),
+            'index.php?option=com_categories&extension=com_etdorganizations',
+            $vName == 'categories'
+        );
+    }
 
     /**
      * Adds Count Items for Category Manager.
@@ -59,29 +59,29 @@ class EtdOrganizationsHelper extends JHelperContent {
             $item->count_published = 0;
 
             $query = $db->getQuery(true);
-            $query->select('state, count(*) AS count')
-                ->from($db->qn('#__etdorganizations'))
+            $query->select('published, count(*) AS count')
+                ->from($db->qn('#__etdorganizations_organizations'))
                 ->where('catid = ' . (int) $item->id)
-                ->group('state');
+                ->group('published');
             $db->setQuery($query);
-            $images = $db->loadObjectList();
+            $organizations = $db->loadObjectList();
 
-            foreach ($images as $image) {
+            foreach ($organizations as $organization) {
 
-                if ($image->state == 1) {
-                    $item->count_published = $image->count;
+                if ($organization->published == 1) {
+                    $item->count_published = $organization->count;
                 }
 
-                if ($image->state == 0) {
-                    $item->count_unpublished = $image->count;
+                if ($organization->published == 0) {
+                    $item->count_unpublished = $organization->count;
                 }
 
-                if ($image->state == 2) {
-                    $item->count_archived = $image->count;
+                if ($organization->published == 2) {
+                    $item->count_archived = $organization->count;
                 }
 
-                if ($image->state == -2) {
-                    $item->count_trashed = $image->count;
+                if ($organization->published == -2) {
+                    $item->count_trashed = $organization->count;
                 }
             }
         }
