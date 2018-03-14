@@ -32,6 +32,52 @@ class EtdOrganizationsModelCategory extends JModelList {
     }
 
     /**
+     * Method to get an array of data items.
+     *
+     * @return  mixed  An array of data items on success, false on failure.
+     *
+     * @since   1.6
+     */
+    public function getItems() {
+
+        $items = parent::getItems();
+
+        if (!empty($items)) {
+            foreach ($items as &$item) {
+
+                $query = $this->_db->getQuery(true);
+
+                $query->select('contact_id')
+                    ->from($this->_db->quoteName('#__etdorganizations_organization_contacts'))
+                    ->where('organization_id = ' . (int) $item->id);
+
+                $this->_db->setQuery($query);
+                $this->_db->execute();
+
+                $contacts_id = $this->_db->loadAssoc();
+
+                if (!empty($contacts_id)) {
+                    foreach ($contacts_id as $contact_id) {
+
+                        $query = $this->_db->getQuery(true);
+
+                        $query->select('a.name, a.image')
+                            ->from($this->_db->quoteName('#__contact_details') . ' AS a')
+                            ->where('a.id = ' . (int) $contact_id);
+
+                        $this->_db->setQuery($query);
+                        $this->_db->execute();
+
+                        $item->contacts[] = $this->_db->loadObject();
+                    }
+                }
+            }
+        }
+
+        return $items;
+    }
+
+    /**
      * Method to build an SQL query to load the list data.
      *
      * @return  string    An SQL query
