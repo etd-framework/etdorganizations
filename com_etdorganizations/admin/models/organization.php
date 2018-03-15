@@ -284,13 +284,12 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                 if(file_exists($logo_dirname)) {
                     // On met un message pour en informer l'utilisateur.
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $logo['basename'], $imagesDir), 'warning');
-                    $logo_dirname = $imagesDir . "/" . $this->genRandomFilename() . "." . $logo['extension'];
                 } else {
                     $logo_dirname = $imagesDir . "/" . $logo['basename'];
-                }
 
-                JFile::move(JPATH_ROOT . "/" . $data['images']['logo'], JPATH_ROOT . "/" . $logo_dirname);
-                $data['images']['logo'] = $logo_dirname;
+                    JFile::move(JPATH_ROOT . "/" . $data['images']['logo'], JPATH_ROOT . "/" . $logo_dirname);
+                    $data['images']['logo'] = $logo_dirname;
+                }
             }
 
             // Si le fichier d'image de fond a été enregistré mais qu'il n'est pas dans le bon répertoire.
@@ -302,13 +301,12 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                 // Check if a identical name of file already exists.
                 if (file_exists($image_fulltext_dirname)) {
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $image_fulltext['basename'], $imagesDir), 'warning');
-                    $image_fulltext_dirname = $imagesDir . "/" . $this->genRandomFilename() . "." . $image_fulltext['extension'];
                 } else {
                     $image_fulltext_dirname = $imagesDir . "/" . $image_fulltext['basename'];
-                }
 
-                JFile::move(JPATH_ROOT . "/" . $data['images']['image_fulltext'], JPATH_ROOT . "/" . $image_fulltext_dirname);
-                $data['images']['image_fulltext'] = $image_fulltext_dirname;
+                    JFile::move(JPATH_ROOT . "/" . $data['images']['image_fulltext'], JPATH_ROOT . "/" . $image_fulltext_dirname);
+                    $data['images']['image_fulltext'] = $image_fulltext_dirname;
+                }
             }
 
             // Cast all the images paramaters into a string.
@@ -366,26 +364,6 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
     }
 
     /**
-     * Génère un nom de fichier aléatoire.
-     *
-     * @param   integer $length La taille du nom de fichier.
-     *
-     * @return  string  Nom de fichier aléatoire.
-     */
-    protected function genRandomFilename($length = 8) {
-        $salt     = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        $base     = strlen($salt);
-        $makepass = '';
-        $random   = JCrypt::genRandomBytes($length + 1);
-        $shift    = ord($random[0]);
-        for ($i = 1; $i <= $length; ++$i) {
-            $makepass .= $salt[($shift + ord($random[$i])) % $base];
-            $shift += ord($random[$i]);
-        }
-        return $makepass;
-    }
-
-    /**
      * Method to save the contacts of a organization.
      * The contact will also be the manager of the organization.
      *
@@ -410,7 +388,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
 
             // On supprime les contacts existants actuellement pour l'entreprise.
             $query->delete($this->_db->quoteName('#__etdorganizations_organization_contacts'))
-                  ->where("organization_id = " . (int)$id);
+                ->where("organization_id = " . (int)$id);
 
             $this->_db->setQuery($query);
 
@@ -420,11 +398,11 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
 
                 $query = $this->_db->getQuery(true);
                 $query->insert($this->_db->quoteName('#__etdorganizations_organization_contacts'))
-                      ->columns(array(
-                          'organization_id',
-                          'contact_id'
-                      ))
-                      ->values((int) $id . "," . (int) $contact);
+                    ->columns(array(
+                        'organization_id',
+                        'contact_id'
+                    ))
+                    ->values((int) $id . "," . (int) $contact);
 
                 $this->_db->setQuery($query);
 
