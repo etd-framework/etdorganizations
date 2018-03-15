@@ -143,22 +143,25 @@ class EtdOrganizationsModelCategory extends JModelList {
         $limitstart = $app->input->get('limitstart', 0, 'uint');
         $this->setState('list.start', $limitstart);
 
+
         $orderCol = $app->input->get('filter_order', $params->get('list_ordering', 'created'));
         if (!in_array($orderCol, $this->filter_fields)) {
             $orderCol = 'created';
         }
-        $this->setState('list.ordering', $orderCol);
 
         $listOrder = $app->input->get('filter_order_Dir', $params->get('list_direction', 'ASC'));
-        if (!in_array(strtoupper($listOrder), array(
-            'ASC',
-            'DESC',
-            ''
-        ))
-        ) {
+        if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+        {
             $listOrder = 'ASC';
         }
         $this->setState('list.direction', $listOrder);
+
+        $orderby   = $params->get('orderby', 'random');
+        $orderDate = $params->get('order_date');
+        $orgaOrder = EtdOrganizationsHelperQuery::orderby($orderby, $orderDate) . ', ';
+
+        $order = $orgaOrder . $this->_db->escape($orderCol) . ' ';
+        $this->setState('list.ordering', $order);
 
         $user = JFactory::getUser();
         if ((!$user->authorise('core.edit.state', 'com_etdorganizations')) && (!$user->authorise('core.edit', 'com_etdorganizations'))) {
