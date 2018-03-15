@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2018-03-13
+### Added
+- The category of an organisation is displayed in the organizations view of the administrator.
+- The information of the contacts of the organization are retrieved for the frontend views.
+- Config fields have been added to choose the order of the organizations for the frontend category view.
+
+### Removed
+- The renaming of the logo and the background image when there is a file with the same name, has been removed.
+
 ## [1.0.4] - 2018-03-13
 ### Added
 - A contact field selector has been added in the admin organization form. It allows to associate zero or more contacts to the organization.
