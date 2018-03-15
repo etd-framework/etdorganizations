@@ -2,14 +2,14 @@
 <config>
 
     <fieldset name="organizations"
-              label="COM_ETDORGANIZATIONS_CONFIG_ORGANIZATIONS_LABEL"
-              description="COM_ETDORGANIZATIONS_CONFIG_ORGANIZATIONS_DESC">
+              label="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ORGANIZATIONS_LABEL"
+              description="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ORGANIZATIONS_DESC">
 
         <field
                 name="orderby"
                 type="list"
-                label="COM_ETDORGANIZATIONS_CONFIG_ORDERBY_LABEL"
-                description="COM_ETDORGANIZATIONS_CONFIG_ORDERBY_DESC"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_ORDERBY_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_ORDERBY_DESC"
                 default="random">
             <option value="random">JGLOBAL_RANDOM_ORDER</option>
             <option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
@@ -33,6 +33,47 @@
             <option value="modified">JGLOBAL_MODIFIED</option>
             <option value="published">JPUBLISHED</option>
         </field>
+    </fieldset>
+
+    <fieldset
+            name="sizes"
+            label="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_SIZES_LABEL"
+            description="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_SIZES_DESC"
+            addfieldpath="/administrator/components/com_etdorganizations/models/fields">
+
+        <field
+                name="sizes"
+                type="sizes"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_SIZES_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_SIZES_DESC"
+                default="[]"
+        />
+
+    </fieldset>
+
+    <fieldset
+            name="advanced"
+            label="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ADVANCED_LABEL"
+            description="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ADVANCED_DESC">
+
+        <field
+                name="images_dir"
+                type="folderlist"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_IMAGES_DIR_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_IMAGES_DIR_DESC"
+                default="etdorganizations"
+                directory="images"
+                hide_none="true"
+        />
+
+        <field
+                name="max_upload_size"
+                type="text"
+                label="COM_ETDORGANIZATIONS_CONFIG_MAX_UPLOAD_SIZE_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_MAX_UPLOAD_SIZE_DESC"
+                filter="integer"
+                default="10000000"/>
+
     </fieldset>
 
     <fieldset name="permissions"
