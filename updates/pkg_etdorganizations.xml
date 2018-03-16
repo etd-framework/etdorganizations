@@ -4,6 +4,25 @@
         <description>ETD Organizations - ETD Solutions</description>
         <element>pkg_etdorganizations</element>
         <type>package</type>
+        <version>1.1.0</version>
+        <infourl title="ETD Organizations 1.1.0">https://github.com/etd-framework/pkg_etdorganizations/releases</infourl>
+        <downloads>
+            <downloadurl type="full" format="zip">https://github.com/etd-framework/pkg_etdorganizations/archive/1.1.0.tar.gz</downloadurl>
+        </downloads>
+        <tags>
+            <tag>stable</tag>
+        </tags>
+        <maintainer>ETD Solutions</maintainer>
+        <maintainerurl>https://etd-solutions.com/</maintainerurl>
+        <targetplatform name="joomla" version="3.8.6" />
+        <client>0</client>
+        <folder/>
+    </update>
+    <update>
+        <name>ETD Organizations</name>
+        <description>ETD Organizations - ETD Solutions</description>
+        <element>pkg_etdorganizations</element>
+        <type>package</type>
         <version>1.0.4</version>
         <infourl title="ETD Organizations 1.0.4">https://github.com/etd-framework/pkg_etdorganizations/releases</infourl>
         <downloads>

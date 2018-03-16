@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.4
+ * @version     1.1.0
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -62,13 +62,13 @@ class EtdOrganizationsModelOrganizations extends JModelList {
      */
     protected function getListQuery() {
 
-        $user  = JFactory::getUser();
         $db    = $this->getDbo();
         $query = $db->getQuery(true);
 
         // Select the required fields from the table.
-        $query->select('a.*');
-        $query->from('#__etdorganizations_organizations AS a');
+        $query->select($this->getState('list.select', 'a.*, b.title as cat_title'))
+            ->from($db->quoteName('#__etdorganizations_organizations') . ' AS a')
+            ->leftJoin($db->quoteName('#__categories') . ' AS b ON b.id = a.catid');
 
         // Filter by category.
         $categoryId = $this->getState('filter.category_id');

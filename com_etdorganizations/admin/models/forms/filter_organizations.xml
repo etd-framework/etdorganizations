@@ -24,7 +24,7 @@ s
 				type="category"
 				label="JOPTION_FILTER_CATEGORY"
 				description="JOPTION_FILTER_CATEGORY_DESC"
-				extension="com_etdgallery"
+				extension="com_etdorganizations"
 				onchange="this.form.submit();">
 			<option value="">COM_ETDORGANIZATIONS_FILTERFIELD_CATEGORYID_OPTION_DEFAULT</option>
 		</field>

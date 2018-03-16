@@ -1,10 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 
+    <fieldset name="organizations"
+              label="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ORGANIZATIONS_LABEL"
+              description="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ORGANIZATIONS_DESC">
+
+        <field
+                name="orderby"
+                type="list"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_ORDERBY_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_ORDERBY_DESC"
+                default="random">
+            <option value="random">JGLOBAL_RANDOM_ORDER</option>
+            <option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+            <option value="date">JGLOBAL_OLDEST_FIRST</option>
+            <option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+            <option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+            <option value="hits">JGLOBAL_MOST_HITS</option>
+            <option value="rhits">JGLOBAL_LEAST_HITS</option>
+            <option value="order">JGLOBAL_ARTICLE_MANAGER_ORDER</option>
+            <option value="rorder">JGLOBAL_ARTICLE_MANAGER_REVERSE_ORDER</option>
+        </field>
+
+        <field
+                name="order_date"
+                type="list"
+                label="JGLOBAL_ORDERING_DATE_LABEL"
+                description="JGLOBAL_ORDERING_DATE_DESC"
+                showon="orderby:rdate,date"
+                default="published">
+            <option value="created">JGLOBAL_CREATED</option>
+            <option value="modified">JGLOBAL_MODIFIED</option>
+            <option value="published">JPUBLISHED</option>
+        </field>
+    </fieldset>
+
+    <fieldset
+            name="sizes"
+            label="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_SIZES_LABEL"
+            description="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_SIZES_DESC"
+            addfieldpath="/administrator/components/com_etdorganizations/models/fields">
+
+        <field
+                name="sizes"
+                type="sizes"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_SIZES_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_SIZES_DESC"
+                default="[]"
+        />
+
+    </fieldset>
+
+    <fieldset
+            name="advanced"
+            label="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ADVANCED_LABEL"
+            description="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ADVANCED_DESC">
+
+        <field
+                name="quality"
+                type="integer"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_QUALITY_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_QUALITY_DESC"
+                default="80"
+                filter="integer"
+                first="0"
+                last="100"
+                step="10"
+        />
+
+        <field
+                name="images_dir"
+                type="folderlist"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_IMAGES_DIR_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_IMAGES_DIR_DESC"
+                default="etdorganizations"
+                directory="images"
+                hide_none="true"
+        />
+
+        <field
+                name="thumb_size"
+                type="size"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_THUMB_SIZE_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_THUMB_SIZE_DESC"
+                default="thumb"/>
+
+        <field
+                name="zoomed_size"
+                type="size"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_ZOOMED_SIZE_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_ZOOMED_SIZE_DESC"
+                default="zoomed"/>
+
+        <field
+                name="max_upload_size"
+                type="text"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_MAX_UPLOAD_SIZE_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_MAX_UPLOAD_SIZE_DESC"
+                filter="integer"
+                default="10000000"/>
+
+    </fieldset>
+
     <fieldset name="permissions"
               label="JCONFIG_PERMISSIONS_LABEL"
-              description="JCONFIG_PERMISSIONS_DESC"
-    >
+              description="JCONFIG_PERMISSIONS_DESC">
 
         <field name="rules"
                type="rules"

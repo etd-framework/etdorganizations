@@ -21,9 +21,11 @@ module.exports = function(grunt) {
                 screwIE8: true,
                 quoteStyle: 0
             },
-            template: {
-                src: 'dist/js/organization.js',
-                dest: 'dist/js/organization.min.js'
+            dist: {
+                files: {
+                    'dist/js/organization.min.js': ['dist/js/organization.js'],
+                    'dist/js/sizes.min.js': ['dist/js/sizes.js']
+                }
             }
         },
         less: {
@@ -38,7 +40,8 @@ module.exports = function(grunt) {
                     ]
                 },
                 files: {
-                    'dist/css/organization.css': 'less/organization.less'
+                    'dist/css/organization.css': 'less/organization.less',
+                    'dist/css/sizes.css': 'less/sizes.less'
                 }
             }
         },
@@ -82,7 +85,8 @@ module.exports = function(grunt) {
             },
             template: {
                 src: [
-                    'css/organization.css'
+                    'css/organization.css',
+                    'css/sizes.css'
                 ]
             }
         },
@@ -97,7 +101,8 @@ module.exports = function(grunt) {
                     compatibility: 'ie9'
                 },
                 files: {
-                    'dist/css/organization.min.css': 'dist/css/organization.css'
+                    'dist/css/organization.min.css': 'dist/css/organization.css',
+                    'dist/css/sizes.min.css': 'dist/css/sizes.css'
                 }
             }
         },
@@ -106,8 +111,10 @@ module.exports = function(grunt) {
                 separator: ''
             },
             dist: {
-                src: ['js/organization.js'], // la source
-                dest: 'dist/js/organization.js' // la destination finale
+                files: {
+                    'dist/js/organization.js': ['js/organization.js'],
+                    'dist/js/sizes.js': ['js/serializeForm.js', 'js/sizes.js']
+                }
             }
         },
         sync: {

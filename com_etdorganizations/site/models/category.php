@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.4
+ * @version     1.1.0
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -29,6 +29,84 @@ class EtdOrganizationsModelCategory extends JModelList {
         }
 
         parent::__construct($config);
+    }
+
+    /**
+     * Method to get an array of data items.
+     *
+     * @return  mixed  An array of data items on success, false on failure.
+     *
+     * @since   1.6
+     */
+    public function getItems() {
+
+        $items = parent::getItems();
+
+        if (!empty($items)) {
+
+            $config = JComponentHelper::getParams('com_etdorganizations');
+            $sizes  = json_decode($config->get('sizes', '[]'));
+
+            foreach ($items as &$item) {
+
+                // Retrieve the identifiers of the contacts of the organization.
+                $query = $this->_db->getQuery(true);
+
+                $query->select('contact_id')
+                    ->from($this->_db->quoteName('#__etdorganizations_organization_contacts'))
+                    ->where('organization_id = ' . (int) $item->id);
+
+                $this->_db->setQuery($query);
+                $this->_db->execute();
+
+                $contacts_id = $this->_db->loadAssoc();
+
+                // Retrieve the information of the existing contacts.
+                if (!empty($contacts_id)) {
+                    foreach ($contacts_id as $contact_id) {
+
+                        $query = $this->_db->getQuery(true);
+
+                        $query->select('a.name, a.image')
+                            ->from($this->_db->quoteName('#__contact_details') . ' AS a')
+                            ->where('a.id = ' . (int) $contact_id);
+
+                        $this->_db->setQuery($query);
+                        $this->_db->execute();
+
+                        $item->contacts[] = $this->_db->loadObject();
+                    }
+                }
+
+                $images = json_decode($item->images);
+
+                // Get the different sizes of image
+                if ($images['logo'] || $images['image_fulltext']) {
+
+                    if ($images['logo']) {
+
+                        $logo = pathinfo($images['logo']);
+                        $item->logo = new stdClass();
+
+                        foreach ($sizes as $size) {
+                            $item->logo->{$size->name} = $logo['dirname'] . "/" . $logo['basename'] . "_" . $size->name;
+                        }
+                    }
+
+                    if ($images['image_fulltext']) {
+
+                        $image_fulltext = pathinfo($images['image_fulltext']);
+                        $item->image_fulltext = new stdClass();
+
+                        foreach ($sizes as $size) {
+                            $item->logo->{$size->name} = $image_fulltext['dirname'] . "/" . $image_fulltext['basename'] . "_" . $size->name;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $items;
     }
 
     /**
@@ -97,22 +175,25 @@ class EtdOrganizationsModelCategory extends JModelList {
         $limitstart = $app->input->get('limitstart', 0, 'uint');
         $this->setState('list.start', $limitstart);
 
+
         $orderCol = $app->input->get('filter_order', $params->get('list_ordering', 'created'));
         if (!in_array($orderCol, $this->filter_fields)) {
             $orderCol = 'created';
         }
-        $this->setState('list.ordering', $orderCol);
 
         $listOrder = $app->input->get('filter_order_Dir', $params->get('list_direction', 'ASC'));
-        if (!in_array(strtoupper($listOrder), array(
-            'ASC',
-            'DESC',
-            ''
-        ))
-        ) {
+        if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+        {
             $listOrder = 'ASC';
         }
         $this->setState('list.direction', $listOrder);
+
+        $orderby   = $params->get('orderby', 'random');
+        $orderDate = $params->get('order_date');
+        $orgaOrder = EtdOrganizationsHelperQuery::orderby($orderby, $orderDate) . ', ';
+
+        $order = $orgaOrder . $this->_db->escape($orderCol) . ' ';
+        $this->setState('list.ordering', $order);
 
         $user = JFactory::getUser();
         if ((!$user->authorise('core.edit.state', 'com_etdorganizations')) && (!$user->authorise('core.edit', 'com_etdorganizations'))) {
