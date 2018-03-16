@@ -42,12 +42,11 @@ class JFormFieldSizes extends JFormField {
             $value = json_decode($value);
         }
 
-        $doc->addStyleSheet(JUri::root(true)."/media/com_etdgallery/css/sizes.css");
-        $doc->addScript(JUri::root(true)."/media/com_etdgallery/js/jquery-serializeForm.min.js");
-        $doc->addScript(JUri::root(true)."/media/com_etdgallery/js/sizes.js");
+        $doc->addStyleSheet(JUri::root(true) . "/media/com_etdorganizations/dist/css/sizes.min.css");
+        $doc->addScript(JUri::root(true) . "/media/com_etdorganizations/dist/js/sizes.min.js");
         $doc->addScriptDeclaration("jQuery(document).ready(function() {
-    initSizes('" . $this->id . "', " . (!empty($value) ? count($value) : '0') . ");
-});");
+            initSizes('" . $this->id . "', " . (!empty($value) ? count($value) : '0') . ");
+        });");
 
         $html[] = '<div class="sizes" id="' . $this->id . '">';
 

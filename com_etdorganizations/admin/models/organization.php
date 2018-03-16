@@ -277,8 +277,8 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
             // Si le fichier de logo a été enregistré mais qu'il n'est pas dans le bon répertoire.
             if(isset($logo['dirname']) && $logo['dirname'] != $imagesDir) {
 
-                // Chemin absolu vers le répertoire dans lequel le logo devrait être.
-                $logo_dirname = JPATH_ROOT . "/" .$imagesDir . "/" . $logo['basename'];
+                // Check if a identical name of file already exists.
+                $logo_dirname = JPATH_ROOT . "/" . $imagesDir . "/" . $logo['basename'];
 
                 // Si un fichier avec un nom identique existe déjà.
                 if(file_exists($logo_dirname)) {

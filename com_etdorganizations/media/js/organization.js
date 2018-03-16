@@ -1,29 +1,39 @@
+/*!
+ * @package     Joomla.Administrator
+ * @subpackage  com_etdorganizations
+ *
+ * @version     1.0.4
+ * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
+ * @license		GNU General Public License v3
+ * @author		ETD Solutions http://www.etd-solutions.com
+ */
+
 jQuery(function($) {
     window.editContact = function(id, name, picture) {
 
-        var $contact = $('#contact-' + id);
+        var contact = document.getElementById('contact-' + id);
 
         // Si le contact n'existe pas déjà, il faut le créer.
-        if ($contact.length === 0) {
+        if (contact !== null) {
 
-            var chaine = '';
+            var html = '';
 
-            chaine += '<div class="thumbnail" id="contact-' + id + '">';
-            chaine += '<input type="hidden" name="jform[contacts][]" value="' + id + '">';
+            html += '<div class="thumbnail" id="contact-' + id + '">';
+            html += '<input type="hidden" name="jform[contacts][]" value="' + id + '">';
 
             if (picture !== undefined) {
                 if (picture.length) {
-                    chaine += '<div class="img" style="background-image:url(' + picture + ');"></div>';
+                    html += '<div class="img" style="background-image:url(' + picture + ');"></div>';
                 }
             }
 
-            chaine += '<div class="caption"><h3>' + name + '</h3>';
-            chaine += '<p><a href="index.php?option=com_etdorganizations&view=contact&tmpl=component&layout=edit&id=' + id + '" class="modal btn" title="Modifier" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"><span class="icon-apply"></span>Modifier</a>';
-            chaine += '&nbsp;<a href="#" class="btn btn-remove" role="button" data-id="' + id + '"><span class="icon-cancel"></span>Effacer</a>';
-            chaine += '&nbsp;<a href="#" class="btn btn-delete" role="button" data-id="' + id + '"><span class="icon-trash"></span>Supprimer</a></p>';
-            chaine += '</div></div>';
+            html += '<div class="caption"><h3>' + name + '</h3>';
+            html += '<p><a href="index.php?option=com_etdorganizations&view=contact&tmpl=component&layout=edit&id=' + id + '" class="modal btn" title="Modifier" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"><span class="icon-apply"></span>Modifier</a>';
+            html += '&nbsp;<a href="#" class="btn btn-remove" role="button" data-id="' + id + '"><span class="icon-cancel"></span>Effacer</a>';
+            html += '&nbsp;<a href="#" class="btn btn-delete" role="button" data-id="' + id + '"><span class="icon-trash"></span>Supprimer</a></p>';
+            html += '</div></div>';
 
-            $('#contact-thumbnails').append(chaine);
+            $('#contact-thumbnails').append(html);
             SqueezeBox.assign($('#contact-' + id + ' a.modal').get(), {
                 parse: 'rel'
             });
@@ -31,21 +41,21 @@ jQuery(function($) {
         // Sinon, c'est qu'il existait déjà. Il faut mettre à jour ses informations sur le thumbnail.
         else {
 
-            $contact.find('.caption h3').text(name);
+            contact.find('.caption h3').text(name);
 
             // S'il y a une image d'enregistrée pour le contact.
             if(picture !== undefined) {
                 if (picture.length) {
 
                     // Si la fiche contact dans le formulaire de l'organisation a déjà une image.
-                    if ($contact.find('.img').length > 0) {
-                        $contact.find('.img').css('background-image', 'url(' + picture + ')');
+                    if (contact.find('.img').length > 0) {
+                        contact.find('.img').css('background-image', 'url(' + picture + ')');
                     } else {
-                        $contact.prepend('<div class="img" style="background-image:url(' + picture + ');"></div>');
+                        contact.prepend('<div class="img" style="background-image:url(' + picture + ');"></div>');
                     }
                 }
             } else {
-                $contact.find('.img').remove();
+                contact.find('.img').remove();
             }
         }
     };

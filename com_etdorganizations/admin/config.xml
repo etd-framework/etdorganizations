@@ -57,6 +57,18 @@
             description="COM_ETDORGANIZATIONS_CONFIG_FIELDSET_ADVANCED_DESC">
 
         <field
+                name="quality"
+                type="integer"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_QUALITY_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_QUALITY_DESC"
+                default="80"
+                filter="integer"
+                first="0"
+                last="100"
+                step="10"
+        />
+
+        <field
                 name="images_dir"
                 type="folderlist"
                 label="COM_ETDORGANIZATIONS_CONFIG_FIELD_IMAGES_DIR_LABEL"
@@ -67,10 +79,24 @@
         />
 
         <field
+                name="thumb_size"
+                type="size"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_THUMB_SIZE_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_THUMB_SIZE_DESC"
+                default="thumb"/>
+
+        <field
+                name="zoomed_size"
+                type="size"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_ZOOMED_SIZE_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_ZOOMED_SIZE_DESC"
+                default="zoomed"/>
+
+        <field
                 name="max_upload_size"
                 type="text"
-                label="COM_ETDORGANIZATIONS_CONFIG_MAX_UPLOAD_SIZE_LABEL"
-                description="COM_ETDORGANIZATIONS_CONFIG_MAX_UPLOAD_SIZE_DESC"
+                label="COM_ETDORGANIZATIONS_CONFIG_FIELD_MAX_UPLOAD_SIZE_LABEL"
+                description="COM_ETDORGANIZATIONS_CONFIG_FIELD_MAX_UPLOAD_SIZE_DESC"
                 filter="integer"
                 default="10000000"/>
 

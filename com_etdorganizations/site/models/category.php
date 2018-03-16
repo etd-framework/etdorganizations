@@ -43,8 +43,13 @@ class EtdOrganizationsModelCategory extends JModelList {
         $items = parent::getItems();
 
         if (!empty($items)) {
+
+            $config = JComponentHelper::getParams('com_etdorganizations');
+            $sizes  = json_decode($config->get('sizes', '[]'));
+
             foreach ($items as &$item) {
 
+                // Retrieve the identifiers of the contacts of the organization.
                 $query = $this->_db->getQuery(true);
 
                 $query->select('contact_id')
@@ -56,6 +61,7 @@ class EtdOrganizationsModelCategory extends JModelList {
 
                 $contacts_id = $this->_db->loadAssoc();
 
+                // Retrieve the information of the existing contacts.
                 if (!empty($contacts_id)) {
                     foreach ($contacts_id as $contact_id) {
 
@@ -69,6 +75,32 @@ class EtdOrganizationsModelCategory extends JModelList {
                         $this->_db->execute();
 
                         $item->contacts[] = $this->_db->loadObject();
+                    }
+                }
+
+                $images = json_decode($item->images);
+
+                // Get the different sizes of image
+                if ($images['logo'] || $images['image_fulltext']) {
+
+                    if ($images['logo']) {
+
+                        $logo = pathinfo($images['logo']);
+                        $item->logo = new stdClass();
+
+                        foreach ($sizes as $size) {
+                            $item->logo->{$size->name} = $logo['dirname'] . "/" . $logo['basename'] . "_" . $size->name;
+                        }
+                    }
+
+                    if ($images['image_fulltext']) {
+
+                        $image_fulltext = pathinfo($images['image_fulltext']);
+                        $item->image_fulltext = new stdClass();
+
+                        foreach ($sizes as $size) {
+                            $item->logo->{$size->name} = $image_fulltext['dirname'] . "/" . $image_fulltext['basename'] . "_" . $size->name;
+                        }
                     }
                 }
             }
