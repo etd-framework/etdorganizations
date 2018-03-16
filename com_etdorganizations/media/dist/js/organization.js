@@ -2,7 +2,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.1.0
+ * @version     1.1.1
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -13,8 +13,8 @@ jQuery(function($) {
 
         var contact = document.getElementById('contact-' + id);
 
-        // Si le contact n'existe pas déjà, il faut le créer.
-        if (contact !== null) {
+        // The contact does not exist, we need to create it.
+        if (contact === null) {
 
             var html = '';
 
@@ -38,16 +38,16 @@ jQuery(function($) {
                 parse: 'rel'
             });
         }
-        // Sinon, c'est qu'il existait déjà. Il faut mettre à jour ses informations sur le thumbnail.
+        // The contact does already exit, this is just an update.
         else {
 
             contact.find('.caption h3').text(name);
 
-            // S'il y a une image d'enregistrée pour le contact.
-            if(picture !== undefined) {
+            // If there is a picture for the contact.
+            if (picture !== undefined) {
                 if (picture.length) {
 
-                    // Si la fiche contact dans le formulaire de l'organisation a déjà une image.
+                    // If the contact had a picture before.
                     if (contact.find('.img').length > 0) {
                         contact.find('.img').css('background-image', 'url(' + picture + ')');
                     } else {

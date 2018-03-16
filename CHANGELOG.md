@@ -4,9 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2018-03-16
+### Changed
+- Bug fix: The contacts of an organization were not always saved.
+- Bug fix: The modal allowing to edit a contact in the organization edit form was not always properly displayed.
+- Bug fix: The contacts thumbnails were not always properly displayed.
+- Bug fix: The images thumbnails of the organizations were not correctly generated.
+
 ## [1.1.0] - 2018-03-16
 ### Added
-- The category of an organisation is displayed in the organizations view of the administrator.
+- The category of an organization is displayed in the organizations view of the administrator.
 - The information of the contacts of the organization are retrieved for the frontend views.
 - Config fields have been added to choose the order of the organizations for the frontend category view.
 - The logo and the background image of an organization are now automatically resized using to config fields.
