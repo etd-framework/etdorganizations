@@ -59,7 +59,7 @@ class EtdOrganizationsModelCategory extends JModelList {
                 $this->_db->setQuery($query);
                 $this->_db->execute();
 
-                $contacts_id = $this->_db->loadAssoc();
+                $contacts_id = $this->_db->loadColumn();
 
                 // Retrieve the information of the existing contacts.
                 if (!empty($contacts_id)) {
