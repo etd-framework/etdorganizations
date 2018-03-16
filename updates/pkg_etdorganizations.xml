@@ -14,7 +14,7 @@
         </tags>
         <maintainer>ETD Solutions</maintainer>
         <maintainerurl>https://etd-solutions.com/</maintainerurl>
-        <targetplatform name="joomla" version="3.8.5" />
+        <targetplatform name="joomla" version="3.8.6" />
         <client>0</client>
         <folder/>
     </update>
@@ -33,7 +33,7 @@
         </tags>
         <maintainer>ETD Solutions</maintainer>
         <maintainerurl>https://etd-solutions.com/</maintainerurl>
-        <targetplatform name="joomla" version="3.8.5" />
+        <targetplatform name="joomla" version="3.8.6" />
         <client>0</client>
         <folder/>
     </update>
