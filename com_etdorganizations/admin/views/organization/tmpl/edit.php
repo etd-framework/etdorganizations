@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.4
+ * @version     1.1.0
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -27,67 +27,68 @@ $doc->addStyleSheet(JUri::root() . 'media/com_etdorganizations/dist/css/organiza
 
 <form action="<?php echo JRoute::_('index.php?option=com_etdorganizations&layout=edit&id=' . (int) $this->item->id); ?>" id="organization-form" method="post" name="adminForm" class="form-validate" enctype="multipart/form-data">
 
-	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
+    <?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
-	<div class="form-horizontal">
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
+    <div class="form-horizontal">
+        <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_DESCRIPTION', true)); ?>
-		<div class="row-fluid">
-			<div class="span9">
-				<fieldset class="adminform">
-					<?php echo $this->form->getInput('organizationtext'); ?>
-				</fieldset>
-			</div>
-			<div class="span3">
-				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
-				<fieldset class="form-vertical">
-					<?php echo $this->form->getControlGroup('created_by'); ?>
-				</fieldset>
-			</div>
-		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_DESCRIPTION', true)); ?>
+        <div class="row-fluid">
+            <div class="span9">
+                <fieldset class="adminform">
+                    <?php echo $this->form->getInput('organizationtext'); ?>
+                </fieldset>
+            </div>
+            <div class="span3">
+                <?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+                <fieldset class="form-vertical">
+                    <?php echo $this->form->getControlGroup('created_by'); ?>
+                </fieldset>
+            </div>
+        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_DETAILS', true)); ?>
-		<div class="row-fluid">
-			<div class="span12">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
-						<?php echo $this->form->renderField('address'); ?>
-						<?php echo $this->form->renderField('postcode'); ?>
-						<?php echo $this->form->renderField('suburb'); ?>
-						<?php echo $this->form->renderField('state'); ?>
-						<?php echo $this->form->renderField('country'); ?>
-					</div>
-					<div class="span6">
-						<?php echo $this->form->renderField('phone'); ?>
-						<?php echo $this->form->renderField('fax'); ?>
-						<?php echo $this->form->renderField('email_to'); ?>
-						<?php echo $this->form->renderField('website'); ?>
-					</div>
-				</div>
-			</div>
-		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_DETAILS', true)); ?>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="row-fluid form-horizontal-desktop">
+                    <div class="span6">
+                        <?php echo $this->form->renderField('address'); ?>
+                        <?php echo $this->form->renderField('postcode'); ?>
+                        <?php echo $this->form->renderField('suburb'); ?>
+                        <?php echo $this->form->renderField('state'); ?>
+                        <?php echo $this->form->renderField('country'); ?>
+                    </div>
+                    <div class="span6">
+                        <?php echo $this->form->renderField('phone'); ?>
+                        <?php echo $this->form->renderField('fax'); ?>
+                        <?php echo $this->form->renderField('email_to'); ?>
+                        <?php echo $this->form->renderField('website'); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php // Do not show the images and links options if the edit form is configured not to. ?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_IMAGES', true)); ?>
-		<div class="row-fluid form-horizontal-desktop">
-			<div class="span12">
-				<?php echo $this->form->getControlGroup('images'); ?>
-				<?php foreach ($this->form->getGroup('images') as $field) : ?>
-					<?php echo $field->getControlGroup(); ?>
-				<?php endforeach; ?>
-			</div>
-		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+        <?php // Do not show the images and links options if the edit form is configured not to. ?>
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_IMAGES', true)); ?>
+        <div class="row-fluid form-horizontal-desktop">
+            <div class="span12">
+                <?php echo $this->form->getControlGroup('images'); ?>
+                <?php foreach ($this->form->getGroup('images') as $field) : ?>
+                    <?php echo $field->getControlGroup(); ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'contacts', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_CONTACTS', true)); ?>
-		<div class="row-fluid form-horizontal-desktop">
-			<div class="span12">
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'contacts', JText::_('COM_ETDORGANIZATIONS_ORGANIZATION_CONTACTS', true)); ?>
+        <div class="row-fluid form-horizontal-desktop">
+            <div class="span12">
                 <div id="contact-thumbnails">
                     <?php if (!empty($this->contacts)) : ?>
                         <?php foreach($this->contacts as $contact) : ?>
+                            <?php $doc->addScriptDeclaration("jQuery(function($) {SqueezeBox.assign($('#contact-" . $contact->id . " a.modal').get(), {parse: 'rel'});});"); ?>
                             <div class="thumbnail" id="contact-<?php echo $contact->id; ?>">
                                 <input type="hidden" name="jform[contacts][]" value="<?php echo $contact->id; ?>">
                                 <?php if($contact->image) : ?><div class="img" style="background-image:url('<?php echo JUri::root() . $contact->image; ?>');"></div><?php endif ; ?>
@@ -104,21 +105,21 @@ $doc->addStyleSheet(JUri::root() . 'media/com_etdorganizations/dist/css/organiza
                     <?php endif ; ?>
                 </div>
                 <?php echo $this->form->getControlGroups('contacts'); ?>
-			</div>
-		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+            </div>
+        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
-		<div class="row-fluid form-horizontal-desktop">
-			<div class="span12">
-				<?php echo $this->form->getControlGroups('advanced'); ?>
-			</div>
-		</div>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('JGLOBAL_FIELDSET_PUBLISHING', true)); ?>
+        <div class="row-fluid form-horizontal-desktop">
+            <div class="span12">
+                <?php echo $this->form->getControlGroups('advanced'); ?>
+            </div>
+        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
-	</div>
+        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+    </div>
 
-	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
+    <input type="hidden" name="task" value="" />
+    <?php echo JHtml::_('form.token'); ?>
 </form>
