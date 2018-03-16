@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.4
+ * @version     1.1.0
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -81,25 +81,25 @@ class EtdOrganizationsModelCategory extends JModelList {
                 $images = json_decode($item->images);
 
                 // Get the different sizes of image
-                if ($images['logo'] || $images['image_fulltext']) {
+                if ($images->logo || $images->image_fulltext) {
 
-                    if ($images['logo']) {
+                    if ($images->logo) {
 
-                        $logo = pathinfo($images['logo']);
+                        $logo = pathinfo($images->logo);
                         $item->logo = new stdClass();
 
                         foreach ($sizes as $size) {
-                            $item->logo->{$size->name} = $logo['dirname'] . "/" . $logo['basename'] . "_" . $size->name;
+                            $item->logo->{$size->name} = $logo['dirname'] . "/" . $logo['filename'] . "_" . $size->name . "." . $logo['extension'];
                         }
                     }
 
-                    if ($images['image_fulltext']) {
+                    if ($images->image_fulltext) {
 
-                        $image_fulltext = pathinfo($images['image_fulltext']);
+                        $image_fulltext = pathinfo($images->image_fulltext);
                         $item->image_fulltext = new stdClass();
 
                         foreach ($sizes as $size) {
-                            $item->logo->{$size->name} = $image_fulltext['dirname'] . "/" . $image_fulltext['basename'] . "_" . $size->name;
+                            $item->image_fulltext->{$size->name} = $image_fulltext['dirname'] . "/" . $image_fulltext['filename'] . "_" . $size->name . "." . $image_fulltext['extension'];
                         }
                     }
                 }
