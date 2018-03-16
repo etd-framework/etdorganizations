@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.0.4
+ * @version     1.1.0
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -381,34 +381,28 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
             return false;
         }
 
-        // S'il y a des nouveaux contacts.
-        if (!empty($contacts)) {
+        $query = $this->_db->getQuery(true);
 
+        // Delete the existing contacts of the organisation.
+        $query->delete($this->_db->quoteName('#__etdorganizations_organization_contacts'))
+            ->where("organization_id = " . (int)$id);
+
+        $this->_db->setQuery($query);
+        $this->_db->execute();
+
+        foreach ($contacts as $contact) {
+
+            // Insert the new contacts.
             $query = $this->_db->getQuery(true);
-
-            // On supprime les contacts existants actuellement pour l'entreprise.
-            $query->delete($this->_db->quoteName('#__etdorganizations_organization_contacts'))
-                ->where("organization_id = " . (int)$id);
+            $query->insert($this->_db->quoteName('#__etdorganizations_organization_contacts'))
+                ->columns(array(
+                    'organization_id',
+                    'contact_id'
+                ))
+                ->values((int) $id . "," . (int) $contact);
 
             $this->_db->setQuery($query);
-
             $this->_db->execute();
-
-            foreach ($contacts as $contact) {
-
-                $query = $this->_db->getQuery(true);
-                $query->insert($this->_db->quoteName('#__etdorganizations_organization_contacts'))
-                    ->columns(array(
-                        'organization_id',
-                        'contact_id'
-                    ))
-                    ->values((int) $id . "," . (int) $contact);
-
-                $this->_db->setQuery($query);
-
-                $this->_db->execute();
-
-            }
         }
 
         return true;
