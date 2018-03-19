@@ -183,7 +183,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
         }
 
         // Automatic handling of alias for empty fields
-        if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0)) {
+        if (in_array($input->get('task'), array('apply', 'save', 'save2new'))) {
             if ($data['alias'] == null || $data['alias'] == '') {
                 if (JFactory::getConfig()->get('unicodeslugs') == 1) {
                     $data['alias'] = JFilterOutput::stringURLUnicodeSlug($data['title']);
