@@ -2,7 +2,7 @@
 <extension type="package" version="3.8" method="upgrade">
     <name>ETDORGANIZATIONS_PACKAGE_TITLE</name>
     <packagename>etdorganizations</packagename>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <creationDate>March 2017</creationDate>
     <author>ETD Solutions</author>
     <copyright>Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.</copyright>
@@ -19,7 +19,8 @@
     </languages>
 
     <files>
-        <file type="component" id="com_etdorganizations" >com_etdorganizations.zip</file>
+        <file type="component" id="com_etdorganizations">com_etdorganizations.zip</file>
+        <file type="module" id="mod_etdorganizations_category" client="site">mod_etdorganizations_category.zip</file>
     </files>
 
     <!-- Update servers -->
