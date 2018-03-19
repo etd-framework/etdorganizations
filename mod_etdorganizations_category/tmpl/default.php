@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  mod_etdorganizations_category
  *
- * @version     1.2.O
+ * @version     1.2.1
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
