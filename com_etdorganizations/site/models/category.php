@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_etdorganizations
  *
- * @version     1.1.1
+ * @version     1.2.0
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -125,8 +125,14 @@ class EtdOrganizationsModelCategory extends JModelList {
         // Select required fields from the categories.
         $query->select($this->getState('list.select', 'a.*, c.alias AS cat_alias'))
             ->from($db->quoteName('#__etdorganizations_organizations') . ' AS a')
-            ->leftJoin($db->quoteName('#__categories') . ' AS C ON c.id = a.catid')
-            ->where('a.catid = ' . $db->quote($this->getState('category.id')));
+            ->leftJoin($db->quoteName('#__categories') . ' AS C ON c.id = a.catid');
+
+        // Filter by category id
+        $catid = $this->getState('category.id', 0);
+
+        if ($catid > 0) {
+            $query->where('a.catid = ' . (int) $catid);
+        }
 
         // Filter by state
         $published = $this->getState('filter.published');
