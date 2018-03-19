@@ -114,7 +114,7 @@ $trashed	= $this->state->get('filter.published') == -2 ? true : false;
                                 <?php endif; ?>
                             </div>
                         </td>
-                        <td class="center hidden-phone">
+                        <td class="hidden-phone">
                             <?php echo $item->cat_title; ?>
                         </td>
                         <td class="center hidden-phone">
