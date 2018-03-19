@@ -3,14 +3,14 @@
  * @package     Joomla.Site
  * @subpackage  com_etdorganizations
  *
- * @version     1.1.1
+ * @version     1.2.0
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
  **/
 
 // no direct access
-defined('_JEXEC') or die('Restricted access to ETD Gallery');
+defined('_JEXEC') or die('Restricted access to ETD Organizations');
 
 abstract class EtdOrganizationsHelperRoute {
 
