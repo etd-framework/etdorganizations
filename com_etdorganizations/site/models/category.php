@@ -125,7 +125,7 @@ class EtdOrganizationsModelCategory extends JModelList {
         // Select required fields from the categories.
         $query->select($this->getState('list.select', 'a.*, c.alias AS cat_alias'))
             ->from($db->quoteName('#__etdorganizations_organizations') . ' AS a')
-            ->leftJoin($db->quoteName('#__categories') . ' AS C ON c.id = a.catid');
+            ->leftJoin($db->quoteName('#__categories') . ' AS c ON c.id = a.catid');
 
         // Filter by category id
         $catid = $this->getState('category.id', 0);
