@@ -208,31 +208,27 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
 
         if (isset($data['images']) && is_array($data['images'])) {
 
-            // On récupère les dossiers de destination.
+            // Retrieve the destination folder.
             $config    = JComponentHelper::getParams('com_etdorganizations');
             $imagesDir = "images/" . $config->get('images_dir', 'etdorganizations');
 
-            // Si l'image appartient à une catégorie.
+            // If the image has a category.
             if ($data["catid"] > 0) {
 
-                // On récupère l'alias de la catégorie.
+                // Retrieve the category alias.
                 $category  = $this->getCategory($data["catid"]);
                 $cat_alias = $category->alias;
 
-                if ($cat_alias) {
+                if (isset($cat_alias) && $cat_alias) {
 
                     $imagesDir .= '/' . $cat_alias;
-
-                    // On crée le dossier de destination.
-                    if (!is_dir($imagesDir)) {
-                        JFolder::create(JPATH_ROOT . '/' . $imagesDir);
-                    }
                 }
             }
 
+            // Add the alias of the organization to the path of the destination folder.
             $imagesDir .= '/' . $data['alias'];
 
-            // On crée le répertoire correspondant à l'alias de l'organisation, s'il n'existe pas.
+            // Create the folder of it does not exist.
             if (!is_dir($imagesDir)) {
                 JFolder::create(JPATH_ROOT . '/' . $imagesDir);
             }
@@ -240,21 +236,21 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
             $logo           = pathinfo($data['images']['logo']);
             $image_fulltext = pathinfo($data['images']['image_fulltext']);
 
-            // Si l'image existe déjà et a donc déjà été uploadée.
-            // Et si la catégorie a changée.
-            // Il faut donc changer les images de dossier.
+            // If the organization already exists.
             if ($data['id']) {
 
-                $item   = $this->getItem($data["id"]);
-                $images = json_decode($item->images);
+                $item = $this->getItem($data["id"]);
 
+                // If the category has changed.
                 if ($item->catid != $data['catid']) {
+
+                    $images = json_decode($item->images);
 
                     if(isset($images['logo'])) {
 
                         $actual_logo = pathinfo($images['logo']);
 
-                        // On renome le fichier original pour faire apparaitre l'id de l'image.
+                        // Rename the original file path to have the id of the image.
                         $old_path      = JPATH_ROOT . "/" . $images['logo'];
                         $original_path = JPATH_ROOT . "/" . $imagesDir . "/" . $actual_logo['basename'];
 
@@ -265,7 +261,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
 
                         $actual_image_fulltext = pathinfo($images['image_fulltext']);
 
-                        // On renome le fichier original pour faire apparaitre l'id de l'image.
+                        // Rename the original file path to have the id of the image.
                         $old_path      = JPATH_ROOT . "/" . $images['image_fulltext'];
                         $original_path = JPATH_ROOT . "/" . $imagesDir . "/" . $actual_image_fulltext['basename'];
 
@@ -274,15 +270,14 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                 }
             }
 
-            // Si le fichier de logo a été enregistré mais qu'il n'est pas dans le bon répertoire.
+            // If the logo has been saved and it is not in the appropriate folder.
             if(isset($logo['dirname']) && $logo['dirname'] != $imagesDir) {
 
-                // Check if a identical name of file already exists.
+                // Absolute path of the directory in which the file is expected to be.
                 $logo_dirname = JPATH_ROOT . "/" . $imagesDir . "/" . $logo['basename'];
 
-                // Si un fichier avec un nom identique existe déjà.
+                // If a file with the same name already exists.
                 if(file_exists($logo_dirname)) {
-                    // On met un message pour en informer l'utilisateur.
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $logo['basename'], $imagesDir), 'warning');
                 } else {
                     $logo_dirname = $imagesDir . "/" . $logo['basename'];
@@ -292,13 +287,13 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                 }
             }
 
-            // Si le fichier d'image de fond a été enregistré mais qu'il n'est pas dans le bon répertoire.
+            // If the fulltext image has been saved and it is not in the appropriate folder.
             if(isset($image_fulltext['dirname']) && $image_fulltext['dirname'] != $imagesDir) {
 
                 // Absolute path of the directory in which the file is expected to be.
                 $image_fulltext_dirname = JPATH_ROOT . "/" . $imagesDir . "/" . $image_fulltext['basename'];
 
-                // Check if a identical name of file already exists.
+                // If a file with the same name already exists.
                 if (file_exists($image_fulltext_dirname)) {
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $image_fulltext['basename'], $imagesDir), 'warning');
                 } else {
