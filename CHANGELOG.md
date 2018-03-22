@@ -5,12 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2018-03-22
+### Added
+- The different sizes of images are moved in the appropriate directory when it is needed.
+
+### Changed
+- Bug fix which prevented to retrieve the category id in the "organizations category" module.
+- Bug fix which prevented to save an alias regarding a new title of an existing organization.
+- Bug fix which prevented a SQL query to retrieve a category of organizations.
+- Saving process of an organization improved.
+
+### Removed
+- The center align of the category name in the admin view of the organizations has been removed.
+
 ## [1.2.1] - 2018-03-19
-## Added
+### Added
 - Added the zip mod_etdorganizations_category folder to the master branch.
 
 ## [1.2.0] - 2018-03-19
-## Added
+### Added
 - Module ETDOrganizations
 - Bug fixes
 
