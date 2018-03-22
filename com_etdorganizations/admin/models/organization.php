@@ -206,11 +206,41 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
             }
         }
 
-        if (isset($data['images']) && is_array($data['images'])) {
+        $data['images'] = $this->checkImages($data);
 
-            // Retrieve the destination folder.
+        $res = parent::save($data);
+
+        if ($res) {
+
+            $id       = ($data["id"] == 0) ? $this->getState('organization.id') : $data["id"];
+            $contacts = isset($data['contacts']) ? $data['contacts'] : array();
+
+            return $this->saveContacts($id, $contacts);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the images will be saved in the good directory.
+     *
+     * @param $data array   Organization data.
+     * @return array|string
+     */
+    public function checkImages($data) {
+
+        $images = $data['images'];
+
+        if (isset($images) && is_array($images)) {
+
+            // Retrieve the destination directory.
             $config    = JComponentHelper::getParams('com_etdorganizations');
+            $sizes     = json_decode($config->get('sizes', '[]'));
             $imagesDir = "images/" . $config->get('images_dir', 'etdorganizations');
+            $app       = JFactory::getApplication();
+
+            $logo           = pathinfo($images['logo']);
+            $image_fulltext = pathinfo($images['image_fulltext']);
 
             // If the image has a category.
             if ($data["catid"] > 0) {
@@ -225,22 +255,19 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                 }
             }
 
-            // Add the alias of the organization to the path of the destination folder.
+            // Add the alias of the organization to the path of the destination directory.
             $imagesDir .= '/' . $data['alias'];
 
-            // Create the folder of it does not exist.
+            // Create the directory of it does not exist.
             if (!is_dir($imagesDir)) {
                 JFolder::create(JPATH_ROOT . '/' . $imagesDir);
             }
 
-            $logo           = pathinfo($data['images']['logo']);
-            $image_fulltext = pathinfo($data['images']['image_fulltext']);
-
-            // If the logo has been saved but it is not in the appropriate folder.
+            // If the logo has been saved but it is not in the appropriate directory.
             // It may happen when the category changes.
             if(isset($logo['dirname']) && $logo['dirname'] != $imagesDir) {
 
-                // Path of the folder in which the file is expected to be.
+                // Path of the directory in which the file is expected to be.
                 $logo_dirname = $imagesDir . "/" . $logo['basename'];
 
                 // If a file with the same name already exists.
@@ -248,15 +275,25 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $logo['basename'], $imagesDir), 'warning');
                 } else {
 
-                    // Move the logo into the correct folder.
-                    JFile::move(JPATH_ROOT . "/" . $data['images']['logo'], JPATH_ROOT . "/" . $logo_dirname);
+                    // Move the logo into the correct directory.
+                    JFile::move(JPATH_ROOT . "/" . $images['logo'], JPATH_ROOT . "/" . $logo_dirname);
+
+                    // Move each file size.
+                    foreach ($sizes as $size_name => $size) {
+
+                        $filename = '/' . $logo['filename'] . "_" . $size_name . "." . $logo['extension'];
+                        $src  = JPATH_ROOT . "/" . $logo['dirname'] . $filename;
+                        $dest = JPATH_ROOT . "/" . $imagesDir . $filename;
+
+                        JFile::move($src, $dest);
+                    }
 
                     // Update the logo path.
-                    $data['images']['logo'] = $logo_dirname;
+                    $images['logo'] = $logo_dirname;
                 }
             }
 
-            // If the fulltext image has been saved but it is not in the appropriate folder.
+            // If the fulltext image has been saved but it is not in the appropriate directory.
             // It may happen when the category changes.
             if(isset($image_fulltext['dirname']) && $image_fulltext['dirname'] != $imagesDir) {
 
@@ -268,31 +305,31 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $image_fulltext['basename'], $imagesDir), 'warning');
                 } else {
 
-                    // Move the fulltext image into the correct folder.
-                    JFile::move(JPATH_ROOT . "/" . $data['images']['image_fulltext'], JPATH_ROOT . "/" . $image_fulltext_dirname);
+                    // Move the fulltext image into the correct directory.
+                    JFile::move(JPATH_ROOT . "/" . $images['image_fulltext'], JPATH_ROOT . "/" . $image_fulltext_dirname);
+
+                    // Move each file size.
+                    foreach ($sizes as $size_name => $size) {
+
+                        $filename = '/' . $image_fulltext['filename'] . "_" . $size_name . "." . $image_fulltext['extension'];
+                        $src  = JPATH_ROOT . "/" . $image_fulltext['dirname'] . $filename;
+                        $dest = JPATH_ROOT . "/" . $imagesDir . $filename;
+
+                        JFile::move($src, $dest);
+                    }
 
                     // Update the fulltext image path.
-                    $data['images']['image_fulltext'] = $image_fulltext_dirname;
+                    $images['image_fulltext'] = $image_fulltext_dirname;
                 }
             }
 
             // Cast all the images paramaters into a string.
             $registry = new Registry;
-            $registry->loadArray($data['images']);
-            $data['images'] = (string) $registry;
+            $registry->loadArray($images);
+            $images = (string) $registry;
         }
 
-        $res = parent::save($data);
-
-        if ($res) {
-
-            $id       = ($data["id"] == 0) ? $this->getState('organization.id') : $data["id"];
-            $contacts = isset($data['contacts']) ? $data['contacts'] : array();
-
-            return $this->saveContacts($id, $contacts);
-        }
-
-        return false;
+        return $images;
     }
 
     /**
