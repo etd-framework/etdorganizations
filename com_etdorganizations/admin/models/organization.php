@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.2.1
+ * @version     1.2.2
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -183,7 +183,7 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
         }
 
         // Automatic handling of alias for empty fields
-        if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0)) {
+        if (in_array($input->get('task'), array('apply', 'save', 'save2new'))) {
             if ($data['alias'] == null || $data['alias'] == '') {
                 if (JFactory::getConfig()->get('unicodeslugs') == 1) {
                     $data['alias'] = JFilterOutput::stringURLUnicodeSlug($data['title']);
@@ -206,139 +206,146 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
             }
         }
 
-        if (isset($data['images']) && is_array($data['images'])) {
+        $data['images'] = $this->checkImages($data);
 
-            // On récupère les dossiers de destination.
+        $res = parent::save($data);
+
+        if ($res) {
+
+            $id       = ($data["id"] == 0) ? $this->getState('organization.id') : $data["id"];
+            $contacts = isset($data['contacts']) ? $data['contacts'] : array();
+
+            return $this->saveContacts($id, $contacts);
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the images will be saved in the good directory.
+     *
+     * @param $data array   Organization data.
+     * @return array|string
+     */
+    public function checkImages($data) {
+
+        $images = $data['images'];
+
+        if (isset($images) && is_array($images)) {
+
+            // Retrieve the destination directory.
             $config    = JComponentHelper::getParams('com_etdorganizations');
+            $sizes     = json_decode($config->get('sizes', '[]'));
             $imagesDir = "images/" . $config->get('images_dir', 'etdorganizations');
+            $app       = JFactory::getApplication();
 
-            // Si l'image appartient à une catégorie.
+            $logo           = pathinfo($images['logo']);
+            $image_fulltext = pathinfo($images['image_fulltext']);
+
+            // If the image has a category.
             if ($data["catid"] > 0) {
 
-                // On récupère l'alias de la catégorie.
+                // Retrieve the category alias.
                 $category  = $this->getCategory($data["catid"]);
                 $cat_alias = $category->alias;
 
-                if ($cat_alias) {
+                if (isset($cat_alias) && $cat_alias) {
 
                     $imagesDir .= '/' . $cat_alias;
-
-                    // On crée le dossier de destination.
-                    if (!is_dir($imagesDir)) {
-                        JFolder::create(JPATH_ROOT . '/' . $imagesDir);
-                    }
                 }
             }
 
+            // Add the alias of the organization to the path of the destination directory.
             $imagesDir .= '/' . $data['alias'];
 
-            // On crée le répertoire correspondant à l'alias de l'organisation, s'il n'existe pas.
+            // Create the directory of it does not exist.
             if (!is_dir($imagesDir)) {
                 JFolder::create(JPATH_ROOT . '/' . $imagesDir);
             }
 
-            $logo           = pathinfo($data['images']['logo']);
-            $image_fulltext = pathinfo($data['images']['image_fulltext']);
-
-            // Si l'image existe déjà et a donc déjà été uploadée.
-            // Et si la catégorie a changée.
-            // Il faut donc changer les images de dossier.
-            if ($data['id']) {
-
-                $item   = $this->getItem($data["id"]);
-                $images = json_decode($item->images);
-
-                if ($item->catid != $data['catid']) {
-
-                    if(isset($images['logo'])) {
-
-                        $actual_logo = pathinfo($images['logo']);
-
-                        // On renome le fichier original pour faire apparaitre l'id de l'image.
-                        $old_path      = JPATH_ROOT . "/" . $images['logo'];
-                        $original_path = JPATH_ROOT . "/" . $imagesDir . "/" . $actual_logo['basename'];
-
-                        JFile::move($old_path, $original_path);
-                    }
-
-                    if(isset($images['image_fulltext'])) {
-
-                        $actual_image_fulltext = pathinfo($images['image_fulltext']);
-
-                        // On renome le fichier original pour faire apparaitre l'id de l'image.
-                        $old_path      = JPATH_ROOT . "/" . $images['image_fulltext'];
-                        $original_path = JPATH_ROOT . "/" . $imagesDir . "/" . $actual_image_fulltext['basename'];
-
-                        JFile::move($old_path, $original_path);
-                    }
-                }
-            }
-
-            // Si le fichier de logo a été enregistré mais qu'il n'est pas dans le bon répertoire.
+            // If the logo has been saved but it is not in the appropriate directory.
+            // It may happen when the category changes.
             if(isset($logo['dirname']) && $logo['dirname'] != $imagesDir) {
 
-                // Check if a identical name of file already exists.
-                $logo_dirname = JPATH_ROOT . "/" . $imagesDir . "/" . $logo['basename'];
+                // Path of the directory in which the file is expected to be.
+                $logo_dirname = $imagesDir . "/" . $logo['basename'];
 
-                // Si un fichier avec un nom identique existe déjà.
-                if(file_exists($logo_dirname)) {
-                    // On met un message pour en informer l'utilisateur.
+                // If a file with the same name already exists.
+                if(file_exists(JPATH_ROOT . "/" . $logo_dirname)) {
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $logo['basename'], $imagesDir), 'warning');
                 } else {
-                    $logo_dirname = $imagesDir . "/" . $logo['basename'];
 
-                    JFile::move(JPATH_ROOT . "/" . $data['images']['logo'], JPATH_ROOT . "/" . $logo_dirname);
-                    $data['images']['logo'] = $logo_dirname;
+                    // Move the logo into the correct directory.
+                    JFile::move(JPATH_ROOT . "/" . $images['logo'], JPATH_ROOT . "/" . $logo_dirname);
+
+                    // Move each file size.
+                    foreach ($sizes as $size_name => $size) {
+
+                        $filename = '/' . $logo['filename'] . "_" . $size_name . "." . $logo['extension'];
+                        $src  = JPATH_ROOT . "/" . $logo['dirname'] . $filename;
+                        $dest = JPATH_ROOT . "/" . $imagesDir . $filename;
+
+                        JFile::move($src, $dest);
+                    }
+
+                    // Update the logo path.
+                    $images['logo'] = $logo_dirname;
                 }
             }
 
-            // Si le fichier d'image de fond a été enregistré mais qu'il n'est pas dans le bon répertoire.
+            // If the fulltext image has been saved but it is not in the appropriate directory.
+            // It may happen when the category changes.
             if(isset($image_fulltext['dirname']) && $image_fulltext['dirname'] != $imagesDir) {
 
-                // Absolute path of the directory in which the file is expected to be.
-                $image_fulltext_dirname = JPATH_ROOT . "/" . $imagesDir . "/" . $image_fulltext['basename'];
+                // Path of the directory in which the file is expected to be.
+                $image_fulltext_dirname = $imagesDir . "/" . $image_fulltext['basename'];
 
-                // Check if a identical name of file already exists.
-                if (file_exists($image_fulltext_dirname)) {
+                // If a file with the same name already exists.
+                if (file_exists(JPATH_ROOT . "/" . $image_fulltext_dirname)) {
                     $app->enqueueMessage(JText::sprintf('COM_ETDORGANIZATIONS_ORGANIZATION_SAVE_WARNING_FILENAME_ALREADY_EXISTS', $image_fulltext['basename'], $imagesDir), 'warning');
                 } else {
-                    $image_fulltext_dirname = $imagesDir . "/" . $image_fulltext['basename'];
 
-                    JFile::move(JPATH_ROOT . "/" . $data['images']['image_fulltext'], JPATH_ROOT . "/" . $image_fulltext_dirname);
-                    $data['images']['image_fulltext'] = $image_fulltext_dirname;
+                    // Move the fulltext image into the correct directory.
+                    JFile::move(JPATH_ROOT . "/" . $images['image_fulltext'], JPATH_ROOT . "/" . $image_fulltext_dirname);
+
+                    // Move each file size.
+                    foreach ($sizes as $size_name => $size) {
+
+                        $filename = '/' . $image_fulltext['filename'] . "_" . $size_name . "." . $image_fulltext['extension'];
+                        $src  = JPATH_ROOT . "/" . $image_fulltext['dirname'] . $filename;
+                        $dest = JPATH_ROOT . "/" . $imagesDir . $filename;
+
+                        JFile::move($src, $dest);
+                    }
+
+                    // Update the fulltext image path.
+                    $images['image_fulltext'] = $image_fulltext_dirname;
                 }
             }
 
             // Cast all the images paramaters into a string.
             $registry = new Registry;
-            $registry->loadArray($data['images']);
-            $data['images'] = (string) $registry;
+            $registry->loadArray($images);
+            $images = (string) $registry;
         }
 
-        $contacts = isset($data['contacts']) ? $data['contacts'] : array();
-
-        $res = parent::save($data);
-
-        $id = ($data["id"] == 0) ? $this->getState('organization.id') : $data["id"];
-
-        $res *= $this->saveContacts($id, $contacts);
-
-        return $res;
+        return $images;
     }
 
     /**
+     * Delete the images of an organization when it is deleted.
+     *
      * @param $pks
      * @return mixed
      */
     public function delete(&$pks) {
 
-        $directories = [];
+        $images = [];
 
         foreach ($pks as $i => $pk) {
 
-            $item            = $this->getItem($pk);
-            $images          = json_decode($item->images);
-            $directories[$i] = pathinfo($images['logo'])['dirname'];
+            $item       = $this->getItem($pk);
+            $images[$i] = json_decode($item->images);
         }
 
         $ret = parent::delete($pks);
@@ -346,16 +353,23 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
         // Si la suppression est OK, on supprime les fichiers aussi.
         if ($ret) {
 
-            jimport('joomla.filesystem.folder');
-            jimport('joomla.filesystem.file');
-
             foreach ($pks as $i => $pk) {
 
-                // On supprime tous les fichiers commençant par l'id.
-                $files = JFolder::files(JPATH_ROOT . "/" . $directories[$i], '^' . $pk . '_.', false, true);
+                $logo           = pathinfo($images[$i]['logo']);
+                $image_fulltext = pathinfo($images[$i]['image_fulltext']);
 
-                if (!empty($files)) {
-                    JFile::delete($files);
+                // Delete all the files of the logo.
+                $logos = JFolder::files(JPATH_ROOT . "/" . $logo['dirname'], '^' . $logo['filename'] . '_', false, true);
+
+                if (!empty($logos)) {
+                    JFile::delete($logos);
+                }
+
+                // Delete all the files of the fulltext images.
+                $images_fulltext = JFolder::files(JPATH_ROOT . "/" . $image_fulltext['dirname'], '^' . $image_fulltext['filename'] . '_', false, true);
+
+                if (!empty($images_fulltext)) {
+                    JFile::delete($images_fulltext);
                 }
             }
         }
@@ -457,9 +471,9 @@ class EtdOrganizationsModelOrganization extends JModelAdmin {
     }
 
     /**
-     * Récupère les informations d'une catégorie en fonction de son id.
+     * Retrieve the category information regarding the identifier.
      *
-     * @param null $catid
+     * @param integer   $catid  Identifier.
      * @return bool
      */
     public function getCategory($catid = null) {

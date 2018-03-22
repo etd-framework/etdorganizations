@@ -3,7 +3,7 @@
  * @package     Joomla.Administrator
  * @subpackage  com_etdorganizations
  *
- * @version     1.2.1
+ * @version     1.2.2
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -114,7 +114,7 @@ $trashed	= $this->state->get('filter.published') == -2 ? true : false;
                                 <?php endif; ?>
                             </div>
                         </td>
-                        <td class="center hidden-phone">
+                        <td class="hidden-phone">
                             <?php echo $item->cat_title; ?>
                         </td>
                         <td class="center hidden-phone">

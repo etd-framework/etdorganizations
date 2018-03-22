@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  mod_etdorganizations_category
  *
- * @version     1.2.1
+ * @version     1.2.2
  * @copyright	Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.
  * @license		GNU General Public License v3
  * @author		ETD Solutions http://www.etd-solutions.com
@@ -39,9 +39,10 @@ abstract class ModEtdOrganizationsCategoryHelper {
         $model->setState('filter.state', 1);
 
         // Filter by category
-        $catid = $params->get('catid', 0, 'uint');
+        $catid = $params->get('id', 0, 'uint');
+
         if ($catid > 0) {
-            $app->input->set('id', $catid);
+            $model->setState('category.id', $catid);
         }
 
         $items = $model->getItems();
