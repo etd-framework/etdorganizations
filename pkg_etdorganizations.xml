@@ -2,7 +2,7 @@
 <extension type="package" version="3.8" method="upgrade">
     <name>ETDORGANIZATIONS_PACKAGE_TITLE</name>
     <packagename>etdorganizations</packagename>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <creationDate>March 2017</creationDate>
     <author>ETD Solutions</author>
     <copyright>Copyright (C) 2017 - 2018 ETD Solutions. All rights reserved.</copyright>
